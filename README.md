@@ -70,3 +70,13 @@ full PAN path strictly for demonstration and enterprise review.
 |           | <---------------- |    build request, call API) | <------------------  |   CIM, ARB, etc.)       |
 +-----------+     Response      +-----------------------------+     Response          +-----------------------+
 ```
+
+## How the Agent Secures and Sends Merchant Credentials
+
+- **Two layers of authentication:** The agent first authenticates itself with a JWT issued by a trusted identity provider. Inside the encrypted payload, it includes only transaction details and customer data. Merchant credentials (the API login ID and transaction key) are typically *not* sent by the agent; they remain securely stored on the MCP server.
+
+- **Message‑level encryption (JWE):** Before the agent sends the payload, it encrypts all sensitive contents using the MCP server’s public key, with RSA‑OAEP‑256 for key wrapping and AES‑GCM for content encryption. This ensures cardholder data and any merchant‑specific fields never travel in plaintext.
+
+- **Server‑side secret injection:** When the MCP server receives and decrypts the JWE, it injects the merchant credentials (loaded from environment variables or a secret manager) into the Authorize.Net request body. If the agent did include credentials, the server decrypts them, uses them immediately, and discards them; they are never stored.
+
+- **No logging or persistence:** The MCP server holds decrypted payloads and merchant credentials in memory only long enough to build the request to Authorize.Net, and never logs or writes them to disk. Strict input validation and scrubbed logging ensure sensitive data cannot leak.
