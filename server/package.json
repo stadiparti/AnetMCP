@@ -1,0 +1,18 @@
+{
+  "name": "anet-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for Authorize.Net with JWE message-level encryption",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "express-rate-limit": "^6.6.1",
+    "jose": "^4.14.4",
+    "node-fetch": "^3.3.1"
+  }
+}
