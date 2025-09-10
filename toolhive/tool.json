@@ -1,0 +1,13 @@
+{
+  "name": "anetMcp",
+  "version": "1.0.0",
+  "description": "MCP server for Authorize.Net with JWE message-level encryption",
+  "endpoints": [
+    {
+      "name": "chargePayment",
+      "url": "/anet/transactions/auth",
+      "method": "POST",
+      "description": "Authorize and capture a payment via Authorize.Net"
+    }
+  ]
+}
