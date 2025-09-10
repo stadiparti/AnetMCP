@@ -60,3 +60,13 @@ It also includes a minimal agent sample that encrypts and posts a request.
 If you can, **avoid raw PAN** touching the MCP by using Authorize.Net tokenization (`opaqueData/Accept.js`) on the agent side
 and only sending opaque tokens inside the JWE. This drastically reduces PCI scope. This reference implementation shows the
 full PAN path strictly for demonstration and enterprise review.
+
+## Architecture Diagram
+
+```text
++-----------+     JWE + JWT     +-----------------------------+     JSON over TLS     +-----------------------+
+| Agent     | ----------------> |         MCP Server         | --------------------> |  Authorize.Net API     |
+| (Client)  |                  |  (Decrypt JWE, verify JWT, |                      |  (CreateTransaction,    |
+|           | <---------------- |    build request, call API) | <------------------  |   CIM, ARB, etc.)       |
++-----------+     Response      +-----------------------------+     Response          +-----------------------+
+```
